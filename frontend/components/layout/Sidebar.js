@@ -1,9 +1,9 @@
 "use client";
-
 import Link from 'next/link';
-import { FaHome, FaBell, FaFont, FaTable, FaQuestion, FaBook, FaLifeRing, FaTimes } from 'react-icons/fa';
+import { FaHome, FaBell, FaFont, FaTable, FaQuestion, FaBook, FaLifeRing, FaTimes, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { usePathname } from 'next/navigation';
 import { useSidebar } from './SidebarContext';
+import { useState } from 'react';
 
 const structure = [
   { id: 0, label: 'Dashboard', link: '/dashboard', icon: <FaHome /> },
@@ -26,10 +26,18 @@ const structure = [
 const Sidebar = () => {
   const pathname = usePathname();
   const { isSidebarOpen, toggleSidebar } = useSidebar();
+  const [openSections, setOpenSections] = useState({});
+
+  const toggleSection = (id) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   return (
     <div className={`fixed top-0 left-0 h-screen bg-gray-800 text-white w-64 z-50 transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-      <div className="p-4 flex justify-between items-center">
+      <div className="p-4 flex justify-between items-center border-b border-gray-700">
         <span className="text-2xl font-bold">MyApp</span>
         <button onClick={toggleSidebar} className="text-white text-2xl focus:outline-none">
           <FaTimes />
@@ -46,6 +54,31 @@ const Sidebar = () => {
                 <h2 key={item.id} className="text-sm font-semibold text-gray-400 mb-2 px-4">
                   {item.label}
                 </h2>
+              );
+            }
+            if (item.label === 'UI Elements') {
+              return (
+                <li key={item.id} className="relative">
+                  <button onClick={() => toggleSection(item.id)} className="flex items-center w-full py-2 px-4 rounded hover:bg-gray-700">
+                    <span className="text-xl">{item.icon}</span>
+                    <span className="ml-2">{item.label}</span>
+                    {openSections[item.id] ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
+                  </button>
+                  {openSections[item.id] && (
+                    <ul className="pl-6 mt-2 space-y-1">
+                      <li>
+                        <Link href="/ui/button" className={`flex items-center w-full py-2 px-4 rounded hover:bg-gray-600 ${pathname === '/ui/button' ? 'bg-gray-600' : ''}`}>
+                          <span className="text-sm">Buttons</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/ui/cards" className={`flex items-center w-full py-2 px-4 rounded hover:bg-gray-600 ${pathname === '/ui/cards' ? 'bg-gray-600' : ''}`}>
+                          <span className="text-sm">Cards</span>
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
+                </li>
               );
             }
             return (

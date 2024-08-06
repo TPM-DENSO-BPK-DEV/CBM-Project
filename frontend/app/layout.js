@@ -1,15 +1,15 @@
-"use client";
-
 import './globals.css';
-import Layout from '../components/Layout';
+import Header from '../components/common/Header';
+import { SidebarProvider } from '../components/layout/SidebarContext';
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Layout>
+        <SidebarProvider>
+          <Header />
           {children}
-        </Layout>
+        </SidebarProvider>
       </body>
     </html>
   );

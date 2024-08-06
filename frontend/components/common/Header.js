@@ -1,18 +1,19 @@
 "use client";
-
-import { FaBars, FaExpand, FaCompress } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
+import { FaBars, FaExpand, FaCompress, FaBell } from 'react-icons/fa';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import ThemeDropdown from './ThemeDropdown';
-import ProfileDropdown from './ProfileDropdown';
-import { useSidebar } from './SidebarContext';
+import ThemeDropdown from '../ui/ThemeDropdown';
+import ProfileDropdown from '../ui/ProfileDropdown';
+import { useSidebar } from '../layout/SidebarContext';
 
 const Header = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const pathname = usePathname();
   const [breadcrumbs, setBreadcrumbs] = useState([]);
   const { toggleSidebar } = useSidebar();
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const notificationRef = useRef(null);
 
   useEffect(() => {
     const pathArray = pathname.split('/').filter((path) => path);
@@ -49,12 +50,29 @@ const Header = () => {
     setIsFullscreen(!isFullscreen);
   };
 
+  const toggleNotification = () => {
+    setIsNotificationOpen(!isNotificationOpen);
+  };
+
+  const handleClickOutside = (event) => {
+    if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+      setIsNotificationOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <header className="bg-gray-800 text-white flex justify-between items-center p-4 fixed w-full z-10 top-0">
       <div className="flex items-center space-x-4">
         <button 
           onClick={toggleSidebar} 
-          className="focus:outline-none p-2 text-2xl" // Adjusted for bigger size
+          className="focus:outline-none p-2 text-2xl"
           aria-label="Toggle Sidebar"
         >
           <FaBars className="text-white" />
@@ -74,6 +92,18 @@ const Header = () => {
         <button onClick={toggleFullscreen} className="focus:outline-none p-2 text-2xl" aria-label="Toggle Fullscreen">
           {isFullscreen ? <FaCompress className="text-white" /> : <FaExpand className="text-white" />}
         </button>
+        <div className="relative" ref={notificationRef}>
+          <button onClick={toggleNotification} className="focus:outline-none p-2 text-2xl" aria-label="Notifications">
+            <FaBell className="text-white" />
+          </button>
+          {isNotificationOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
+              <div className="p-4 text-gray-700">Sample Notification 1</div>
+              <div className="p-4 text-gray-700">Sample Notification 2</div>
+              <div className="p-4 text-gray-700">Sample Notification 3</div>
+            </div>
+          )}
+        </div>
         <ThemeDropdown />
         <ProfileDropdown />
       </div>

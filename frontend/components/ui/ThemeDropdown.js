@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useRef, useEffect } from 'react';
 import { FaSun, FaMoon, FaCaretDown } from 'react-icons/fa';
 
@@ -16,8 +15,8 @@ const ThemeDropdown = () => {
     }
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
   };
 
   const handleClickOutside = (event) => {
@@ -33,8 +32,9 @@ const ThemeDropdown = () => {
     };
   }, []);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+  const changeTheme = (newTheme) => {
+    setTheme(newTheme);
+    setIsOpen(false);
   };
 
   return (
@@ -45,8 +45,11 @@ const ThemeDropdown = () => {
       </button>
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-20">
-          <button onClick={toggleTheme} className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none">
-            {theme === 'light' ? <><FaMoon className="mr-2" /> Switch to Dark Mode</> : <><FaSun className="mr-2" /> Switch to Light Mode</>}
+          <button onClick={() => changeTheme('light')} className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none">
+            <FaSun className="mr-2" /> Light Mode
+          </button>
+          <button onClick={() => changeTheme('dark')} className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none">
+            <FaMoon className="mr-2" /> Dark Mode
           </button>
         </div>
       )}
