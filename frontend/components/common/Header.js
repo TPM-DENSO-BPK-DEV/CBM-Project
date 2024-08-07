@@ -1,9 +1,8 @@
-// components/common/Header.js
 "use client";
+import Link from 'next/link';
 import { FaBars, FaExpand, FaCompress, FaBell } from 'react-icons/fa';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 import ThemeDropdown from '../ui/ThemeDropdown';
 import ProfileDropdown from '../ui/ProfileDropdown';
 import { useSidebar } from '../layout/SidebarContext';
@@ -81,6 +80,9 @@ const Header = () => {
             </nav>
           </div>
           <div className="flex items-center space-x-2">
+            <Link href="/dashboard/analytics" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm">
+              Analytics
+            </Link>
             <button onClick={toggleFullscreen} className="focus:outline-none p-1 text-xl transition-colors duration-200 hover:bg-gray-700 rounded" aria-label="Toggle Fullscreen">
               {isFullscreen ? <FaCompress /> : <FaExpand />}
             </button>
@@ -105,7 +107,7 @@ const Header = () => {
         </div>
         <NoSSR />
       </header>
-      <div className="h-[50px]"></div>
+      <div className="h-[60px]"></div>
     </>
   );
 };
