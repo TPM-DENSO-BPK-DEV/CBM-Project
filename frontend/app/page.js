@@ -1,10 +1,14 @@
-"use client";
 import Layout from '../components/layout/Layout';
 
-export default function HomePage() {
+const Home = () => {
   return (
     <Layout>
-      <div>Welcome to the Home Page!</div>
+      <div className="p-6 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        <h1 className="text-2xl font-bold mb-6">Home</h1>
+        <p>Welcome to the home page.</p>
+      </div>
     </Layout>
   );
-}
+};
+
+export default Home;
