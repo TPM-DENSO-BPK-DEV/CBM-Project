@@ -8,7 +8,7 @@ import ProfileDropdown from '../ui/ProfileDropdown';
 import { useSidebar } from '../layout/SidebarContext';
 import NoSSR from './NoSSR';
 
-const Header = () => {
+const Header = ({ is404 = false }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const pathname = usePathname();
   const [breadcrumbs, setBreadcrumbs] = useState([]);
@@ -18,6 +18,10 @@ const Header = () => {
 
   useEffect(() => {
     const generateBreadcrumbs = () => {
+      if (is404) {
+        return [{ href: '/', label: 'HOME' }, { href: pathname, label: 'PAGE NOT FOUND' }];
+      }
+
       const pathArray = pathname.split('/').filter((path) => path);
       const breadcrumbPaths = pathArray.map((path, index) => ({
         href: '/' + pathArray.slice(0, index + 1).join('/'),
@@ -26,7 +30,7 @@ const Header = () => {
       return [{ href: '/', label: 'Home' }, ...breadcrumbPaths];
     };
     setBreadcrumbs(generateBreadcrumbs());
-  }, [pathname]);
+  }, [pathname, is404]);
 
   const toggleFullscreen = useCallback(() => {
     if (!document.fullscreenElement) {
@@ -71,9 +75,13 @@ const Header = () => {
             <nav aria-label="Breadcrumb" className="hidden sm:flex items-center space-x-1">
               {breadcrumbs.map((breadcrumb, index) => (
                 <span key={breadcrumb.href} className="flex items-center last:font-semibold text-sm">
-                  <Link href={breadcrumb.href} className="hover:underline">
-                    {breadcrumb.label}
-                  </Link>
+                  {index === breadcrumbs.length - 1 ? (
+                    <span>{breadcrumb.label}</span>
+                  ) : (
+                    <Link href={breadcrumb.href} className="hover:underline">
+                      {breadcrumb.label}
+                    </Link>
+                  )}
                   {index < breadcrumbs.length - 1 && <span className="mx-1">/</span>}
                 </span>
               ))}
@@ -107,7 +115,7 @@ const Header = () => {
         </div>
         <NoSSR />
       </header>
-      <div className="h-[60px]"></div>
+      <div className="h-[40px]"></div>
     </>
   );
 };

@@ -1,18 +1,21 @@
+// components/layout/Layout.js
+"use client";
 import Header from '../common/Header';
 import Sidebar from './Sidebar';
+import { useSidebar } from './SidebarContext';
 
-const Layout = ({ children }) => {
+export default function Layout({ children }) {
+  const { isSidebarOpen } = useSidebar();
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div>
       <Header />
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-auto">
         <Sidebar />
-        <main className="flex-1 p-3 overflow-auto">
+        <main className="flex-1 overflow-auto p-2 bg-white">
           {children}
         </main>
       </div>
     </div>
   );
-};
-
-export default Layout;
+}

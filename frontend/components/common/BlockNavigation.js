@@ -13,7 +13,34 @@ const BlockNavigation = () => {
   
   useEffect(() => {
     const updateBlocks = () => {
-      const newLabel = pathname === '/' ? 'Home' : pathname.split('/').pop().replace(/-/g, ' ');
+      // Define routes to exclude from generating a block
+      const excludedRoutes = ['/dashboard/analytics'];
+      
+      // Check if the current route should be excluded
+      if (excludedRoutes.includes(pathname)) {
+        return;
+      }
+
+      // Check if the current page is a 404 page
+      const isPageNotFound = document.body.getAttribute('data-page-type') === 'not-found';
+      
+      if (isPageNotFound) {
+        console.log("404 page detected, not updating blocks");
+        return;
+      }
+
+      // Extract the last two segments from the pathname
+      const pathSegments = pathname.split('/').filter(segment => segment);
+      let newLabel = 'Home';
+
+      if (pathSegments.length >= 2) {
+        const previousSegment = pathSegments[pathSegments.length - 2].replace(/-/g, ' ');
+        const lastSegment = pathSegments[pathSegments.length - 1].replace(/-/g, ' ');
+        newLabel = `${previousSegment}/${lastSegment}`;
+      } else if (pathSegments.length === 1) {
+        newLabel = pathSegments[0].replace(/-/g, ' ');
+      }
+
       setBlocks(prevBlocks => {
         const existingBlockIndex = prevBlocks.findIndex(block => block.link === pathname);
         if (existingBlockIndex === -1) {
@@ -23,6 +50,7 @@ const BlockNavigation = () => {
         return prevBlocks.map((block, index) => ({ ...block, active: index === existingBlockIndex }));
       });
     };
+
     updateBlocks();
   }, [pathname]);
 
