@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    networks:
+      - my_network
+
+  redis:
+    image: redis:latest
+    networks:
+      - my_network
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: CBM_Model
+      POSTGRES_USER: CBM_Admin
+      POSTGRES_PASSWORD: 1qaz@WSX
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge

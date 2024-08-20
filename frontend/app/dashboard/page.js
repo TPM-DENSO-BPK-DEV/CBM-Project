@@ -51,9 +51,7 @@ const CardDescription = ({ children }) => <p className="mt-1 text-sm text-gray-5
 // Data for Sections
 const sections = {
   Alternator: [
-    { section: 414463, mcNos: ['6ACU0001', '6ACU0002', '6ACU0003'] },
-    { section: 414461, mcNos: ['6ACU0004', '6ACU0005', '6ACU0006'] },
-    { section: 414464, mcNos: ['6ACU0007', '6ACU0008', '6ACU0009'] },
+    { section: 414272, mcNos: ['6DY-0192'] },
   ],
   Starter: [
     { section: 414280, mcNos: ['6ABM0001', '6ABM0002', '6ABM0003'] },

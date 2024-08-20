@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cached Data</title>
+</head>
+<body>
+    <h1>Cached CBM Raw Data List</h1>
+    <p>Time to Live: 
+        {% if cbm_raw_data_list_ttl == "Key does not exist" %}
+            {{ cbm_raw_data_list_ttl }}
+        {% else %}
+            {{ cbm_raw_data_list_ttl }} seconds
+        {% endif %}
+    </p>
+    <ul>
+        {% if cbm_raw_data_list %}
+            {% for item in cbm_raw_data_list.results %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No cached data found for CBM Raw Data List.</li>
+        {% endif %}
+    </ul>
+
+    <h1>Cached CBM Raw Data Details</h1>
+    <ul>
+        {% if cbm_raw_data_detail %}
+            {% for key, value in cbm_raw_data_detail.items %}
+                <li><strong>{{ key }}</strong>:
+                    <p>
+                        {% with ttl=cbm_raw_data_detail_ttl.key %}
+                            Time to Live: 
+                            {% if ttl == "Key does not exist" %}
+                                {{ ttl }}
+                            {% else %}
+                                {{ ttl }} seconds
+                            {% endif %}
+                        {% endwith %}
+                    </p>
+                    <ul>
+                        {% if value %}
+                            {% for detail_key, detail_value in value.items %}
+                                <li><strong>{{ detail_key }}:</strong> {{ detail_value }}</li>
+                            {% endfor %}
+                        {% else %}
+                            <li>No details found.</li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>No cached data found for CBM Raw Data Details.</li>
+        {% endif %}
+    </ul>
+
+    <h1>Cached CBM Non-Zero List</h1>
+    <p>Time to Live: 
+        {% if cbm_non_zero_list_ttl == "Key does not exist" %}
+            {{ cbm_non_zero_list_ttl }}
+        {% else %}
+            {{ cbm_non_zero_list_ttl }} seconds
+        {% endif %}
+    </p>
+    <ul>
+        {% if cbm_non_zero_list %}
+            {% for item in cbm_non_zero_list.results %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No cached data found for CBM Non-Zero List.</li>
+        {% endif %}
+    </ul>
+
+    <h1>Cached CBM Non-Zero Details</h1>
+    <ul>
+        {% if cbm_non_zero_detail %}
+            {% for key, value in cbm_non_zero_detail.items %}
+                <li><strong>{{ key }}</strong>:
+                    <p>
+                        {% with ttl=cbm_non_zero_detail_ttl.key %}
+                            Time to Live: 
+                            {% if ttl == "Key does not exist" %}
+                                {{ ttl }}
+                            {% else %}
+                                {{ ttl }} seconds
+                            {% endif %}
+                        {% endwith %}
+                    </p>
+                    <ul>
+                        {% if value %}
+                            {% for detail_key, detail_value in value.items %}
+                                <li><strong>{{ detail_key }}:</strong> {{ detail_value }}</li>
+                            {% endfor %}
+                        {% else %}
+                            <li>No details found.</li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>No cached data found for CBM Non-Zero Details.</li>
+        {% endif %}
+    </ul>
+</body>
+</html>

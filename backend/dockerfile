@@ -1,0 +1,17 @@
+# Use the official Python image as a base image
+FROM python:3.11-slim
+
+# Set the working directory in the container
+WORKDIR /code
+
+# Copy the requirements file into the container
+COPY requirements.txt /code/
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code into the container
+COPY . /code/
+
+# Run Django's development server on port 8000
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
